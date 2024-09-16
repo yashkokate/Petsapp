@@ -1,0 +1,301 @@
+<html>
+<head>
+<style>
+body {
+    background: rgb(213, 217, 233);
+    min-height: 100vh;
+    vertical-align: middle;
+    display: flex;
+    font-family: Muli;
+    font-size: 14px
+}
+
+.card {
+    margin: auto;
+    width: 320px;
+    max-width: 600px;
+    border-radius: 20px
+}
+
+.mt-50{
+    margin-top:50px;
+}
+
+.mb-50{
+    margin-bottom:50px;
+}
+
+@media(max-width:767px) {
+    .card {
+        width: 80%
+    }
+}
+
+@media(height:1366px) {
+    .card {
+        width: 75%
+    }
+}
+
+#orderno {
+    padding: 1vh 2vh 0;
+    font-size: smaller
+}
+
+.gap .col-2 {
+    background-color: rgb(213, 217, 233);
+    width: 1.2rem;
+    padding: 1.2rem;
+    margin-top: -2.5rem;
+    border-radius: 1.2rem
+}
+
+.title {
+    display: flex;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 12%
+}
+
+.main {
+    padding: 0 2rem
+}
+
+.main img {
+    border-radius: 7px
+}
+
+.main p {
+    margin-bottom: 0;
+    font-size: 0.75rem
+}
+
+#sub-title p {
+    margin: 1vh 0 2vh 0;
+    font-size: 1rem
+}
+
+.row-main {
+    padding: 1.5vh 0;
+    align-items: center
+}
+
+hr {
+    margin: 1rem -1vh;
+    border-top: 1px solid rgb(214, 214, 214)
+}
+
+.total {
+    font-size: 1rem
+}
+
+@media(height: 1366px) {
+    .main p {
+        margin-bottom: 0;
+        font-size: 1.2rem
+    }
+
+    .total {
+        font-size: 1.5rem
+    }
+}
+
+.btn {
+    background-color: rgb(3, 122, 219);
+    border-color: rgb(3, 122, 219);
+    color: white;
+    margin: 7vh 0;
+    border-radius: 7px;
+    width: 60%;
+    font-size: 0.8rem;
+    padding: 0.8rem;
+    justify-content: center
+}
+
+.btn:focus {
+    box-shadow: none;
+    outline: none;
+    box-shadow: none;
+    color: white;
+    -webkit-box-shadow: none;
+   
+    transition: none
+}
+
+.btn:hover {
+    color: white
+}
+</style>
+<script src="https://www.paypal.com/sdk/js?client-id=sb&enable-funding=venmo&currency=USD" data-sdk-integration-source="button-factory"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+    <body>
+    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
+
+    <script>
+        var amount= {{orderdata.total}}
+
+     function initPayPalButton() {
+
+paypal.Buttons({
+
+  style: {
+
+    shape: 'rect',
+
+    color: 'gold',
+
+    layout: 'vertical',
+
+    label: 'paypal',
+
+   
+
+  },
+
+
+
+  createOrder: function(data, actions) {
+
+    return actions.order.create({
+
+      purchase_units: [{"amount":{"currency_code":"USD","value":amount}}]
+
+    });
+
+  },
+
+
+
+  onApprove: function(data, actions) {
+
+    return actions.order.capture().then(function(orderData) {
+
+     
+
+      // Full available details
+
+      console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+
+
+
+      // Show a success message within this page, e.g.
+
+      const element = document.getElementById('paypal-button-container');
+
+      element.innerHTML = '';
+
+      element.innerHTML = '<h3>Thank you for your payment!</h3>';
+
+        document.getElementById("tsid").value = orderData['id']
+        
+        document.getElementById("status").value = orderData['status']
+        
+        document.getElementById("amountpaid").value = amount 
+
+      // Or go to another URL:  actions.redirect('thank_you.html');
+
+     
+
+    });
+
+  },
+
+
+
+  onError: function(err) {
+
+    console.log(err);
+
+  }
+
+}).render('#paypal-button-container');
+
+}
+
+initPayPalButton();
+
+</script>
+
+
+    welcome {{sessionvalue}}
+    <div class="card mt-50 mb-50">
+    <div class="col d-flex"><span class="text-muted" id="orderno">order #546924</span></div>
+    <div class="gap">
+        <div class="col-2 d-flex mx-auto"> </div>
+    </div>
+    <div class="title mx-auto"> Thank you for your order! </div>
+    <div class="main"> <span id="sub-title">
+            <p><b>Payment Summary</b></p>
+        </span>
+        {% comment %} <div class="row row-main">
+            <div class="col-3"> <img class="img-fluid" src="https://i.imgur.com/qSnCFIS.png"> </div>
+            <div class="col-6">
+                <div class="row d-flex">
+                    <p><b>iPhone XR</b></p>
+                </div>
+                <div class="row d-flex">
+                    <p class="text-muted">128GB White</p>
+                </div>
+            </div>
+            <div class="col-3 d-flex justify-content-end">
+                <p><b>$599</b></p>
+            </div>
+        </div>
+        <div class="row row-main">
+            <div class="col-3"> <img class="img-fluid" src="https://i.imgur.com/WuJwAJD.jpg"> </div>
+            <div class="col-6">
+                <div class="row d-flex">
+                    <p><b>Airpods</b></p>
+                </div>
+                <div class="row d-flex">
+                    <p class="text-muted">With charging case</p>
+                </div>
+            </div>
+            <div class="col-3 d-flex justify-content-end">
+                <p><b>$199</b></p>
+            </div>
+        </div>
+        <div class="row row-main">
+            <div class="col-3 "> <img class="img-fluid" src="https://i.imgur.com/hOsIes2.png"> </div>
+            <div class="col-6">
+                <div class="row d-flex">
+                    <p><b>Belkin Boost Up</b></p>
+                </div>
+                <div class="row d-flex">
+                    <p class="text-muted">Wireless charging pad</p>
+                </div>
+            </div>
+            <div class="col-3 d-flex justify-content-end">
+                <p><b>$49.95</b></p>
+            </div>
+        </div>
+        <hr> {% endcomment %}
+        <div class="total">
+            <div class="row">
+                <div class="col"> <b> your total is :</b> </div>
+                <div class="col d-flex justify-content-end"> <b>${{orderdata.total}}</b> </div>
+            </div> 
+            <div>
+                {{session}}
+            </div>
+            <div id="paypal-button-container"></div>
+            <form action="{% url 'paymentview'%}" method="POST"> 
+            {% csrf_token %}
+            <input type="hidden" id="tsid" name="tsid">
+            <input type="hidden" id="status" name="status"></p>
+            <input type="hidden" id="amountpaid" name="amountpaid"></p>
+            <input type="hidden" name="session" value={{session}}>
+            <input type="submit" name="Genarate recipt">
+            </form>
+
+    <!-- Include the PayPal JavaScript SDK -->
+    
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
